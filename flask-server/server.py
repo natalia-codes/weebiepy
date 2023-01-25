@@ -7,8 +7,8 @@ app = Flask(__name__)
 
 
 @app.route('/test')
-def home():
-    return {"items": ["fist", "second", "third", "etc..."]}
+def items():
+    return {"itemsTest": ["fist", "second", "third", "etc..."]}
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -16,7 +16,15 @@ function App() {
     )
   }, [])
   return (
-    <div></div>
+    <div>
+      {(typeof data.itemsTest === 'undefined') ? (
+        <p>Loading...</p>
+      ) : (
+        data.itemsTest.map((items, i) => (
+          <p key={i}>{items}</p>
+        ))
+      )}
+    </div>
   )
 }
 
