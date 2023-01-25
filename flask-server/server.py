@@ -6,13 +6,9 @@ app = Flask(__name__)
 # base api route
 
 
-@app.route('/')
+@app.route('/test')
 def home():
-    return{
-        "items": [
-            "fist", "second", "third", "etc..."
-        ]
-    }
+    return {"items": ["fist", "second", "third", "etc..."]}
 
 if __name__ == "__main__":
     app.run(debug=True)
