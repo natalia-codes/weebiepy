@@ -1,15 +1,37 @@
-from crypt import methods
+import json
 import  os
 from flask import Flask, request, jsonify
+from datetime import datetime, timedelta, timezone
 from flask_jwt_extended import create_access_token, get_jwt, \
-    unset_jwt_cookies, jwt_required, JWTManager
+    get_jwt_identity, unset_jwt_cookies, jwt_required, JWTManager
 
 api = Flask(__name__)
 
 api = Flask(__name__)
 
 api.config["JWT_SECRET_KEY"] = "change"
+api.config["JWT_ACCESS_EXPIRATION"] = timedelta(hours=1)
+
 jwt = JWTManager(api)
+
+@api.after_request
+def refresh_before_exp_jwt(response):
+    try: 
+        exp_timestamp = get_jwt()["exp"]
+        now = datetime.now(timezone.utc)
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            data = response.get_json()
+
+            if type(data) is dict: 
+                data['access_token'] = access_token
+                response.data = json.dumps(data)
+        return response
+    # when not valid jwt:
+    except (RuntimeError, KeyError):
+        return response
 
 @api.route('/token', methods=["POST"])
 def create_token():
@@ -29,6 +51,7 @@ def logout():
     return response
 
 @api.route('/profile')
+@jwt_required()
 def my_profile():
     response_body = {
         "name": "Natalia",
