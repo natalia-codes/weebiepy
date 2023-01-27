@@ -7,13 +7,12 @@ from flask_jwt_extended import create_access_token, get_jwt, \
 
 api = Flask(__name__)
 
-api = Flask(__name__)
-
-api.config["JWT_SECRET_KEY"] = "change"
+api.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET_KEY')
 api.config["JWT_ACCESS_EXPIRATION"] = timedelta(hours=1)
 
 jwt = JWTManager(api)
 
+# set time before logout
 @api.after_request
 def refresh_before_exp_jwt(response):
     try: 
