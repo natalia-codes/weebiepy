@@ -1,3 +1,4 @@
+from crypt import methods
 import  os
 from flask import Flask, request, jsonify
 from flask_jwt_extended import create_access_token, get_jwt, \
@@ -19,6 +20,12 @@ def create_token():
 
     access_token = create_access_token(identity=email)
     response = {"access_token":access_token}
+    return response
+
+@api.route("/logout", methods=['POST'])
+def logout():
+    response = jsonify({"msg": "logout successful"})
+    unset_jwt_cookies(response)
     return response
 
 @api.route('/profile')
