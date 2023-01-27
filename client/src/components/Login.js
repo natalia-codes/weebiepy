@@ -1,9 +1,5 @@
 import { useState } from 'react';
 import axios from "axios";
-import Button from 'react-bootstrap/Button';
-// import 'bootstrap/dist/css/bootstrap.min.css'
-
-
 
 function Login(props) {
 
@@ -62,9 +58,6 @@ function Login(props) {
                   value={loginForm.password} />
 
           <button onClick={logMeIn}>Submit</button>
-          <Button as="a" variant="primary">
-    Button as link
-  </Button>
         </form>
       </div>
     );
