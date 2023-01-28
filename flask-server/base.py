@@ -1,9 +1,19 @@
+from crypt import methods
 import json
 import  os
 from flask import Flask, request, jsonify
 from datetime import datetime, timedelta, timezone
 from flask_jwt_extended import create_access_token, get_jwt, \
     get_jwt_identity, unset_jwt_cookies, jwt_required, JWTManager
+from api_routes.newnew import *
+
+
+
+
+
+
+
+
 
 api = Flask(__name__)
 
@@ -49,15 +59,28 @@ def logout():
     unset_jwt_cookies(response)
     return response
 
-@api.route('/profile')
+# @api.route('/profile')
+# @jwt_required()
+# def my_profile():
+#     response_body = {
+#         "name": "Natalia",
+#         "about" :"testestrest",
+#         "more": "test",
+#         "last": "tedfgtdfgst"
+#     }
+
+#     return response_body
+
+@api.route('/profile', methods=['GET'])
 @jwt_required()
 def my_profile():
-    response_body = {
-        "name": "Natalia",
-        "about" :"testestrest",
-        "more": "test",
-        "last": "tedfgtdfgst"
-    }
+
+    for i in db.execute("SELECT * FROM data_table WHERE id=1"):
+        response_body = {
+            "name": i[1],
+            "about": i[2]
+        }
 
     return response_body
 
+# print(db.execute("SELECT * FROM data_table WHERE id=1"))
